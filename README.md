@@ -8,3 +8,4 @@ Simulation
 * https://docs.scipy.org/doc/numpy/reference/generated/numpy.lib.Arrayterator.html
 * https://unidata.github.io/netcdf4-python/netCDF4/index.html
 * https://github.com/Unidata/netcdf4-python
+* https://www.youtube.com/watch?v=BO76QisYOxo
