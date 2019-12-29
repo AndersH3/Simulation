@@ -9,3 +9,6 @@ Simulation
 * https://unidata.github.io/netcdf4-python/netCDF4/index.html
 * https://github.com/Unidata/netcdf4-python
 * https://www.youtube.com/watch?v=BO76QisYOxo
+
+==NetCDF==
+* https://nbviewer.jupyter.org/github/ouwxguy40/notebooks/blob/master/ASR_PI_2014/ARM%20NetCDF%20and%20Python%20Tutorial.ipynb?create=1
