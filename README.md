@@ -14,3 +14,9 @@ Simulation
 * https://nbviewer.jupyter.org/github/ouwxguy40/notebooks/blob/master/ASR_PI_2014/ARM%20NetCDF%20and%20Python%20Tutorial.ipynb?create=1
 * https://www.unidata.ucar.edu/software/netcdf/fan_utils.html
 
+==Python==
+* Jupyter: https://jupyter.org/
+* Scipy stack, including matplotlib and numpy: https://www.scipy.org/
+* Info on netCDF: https://www.unidata.ucar.edu/
+* Xarray: http://xarray.pydata.org/en/stable/
+* Scitools: https://scitools.org.uk/
