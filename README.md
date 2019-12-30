@@ -19,4 +19,5 @@ Simulation
 * Scipy stack, including matplotlib and numpy: https://www.scipy.org/
 * Info on netCDF: https://www.unidata.ucar.edu/
 * Xarray: http://xarray.pydata.org/en/stable/
+* https://www.giss.nasa.gov/tools/panoply/download/
 
