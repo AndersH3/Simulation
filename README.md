@@ -25,3 +25,7 @@ Simulation
 ==Chapel==
 * https://chapel-lang.org
 * https://www.wikiwand.com/en/LAPACK
+
+==References==
+https://www.wikiwand.com/en/Standard_normal_table
+https://cockrum.net/code.html#TrueRNG_gaussian
