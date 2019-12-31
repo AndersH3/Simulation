@@ -21,3 +21,7 @@ Simulation
 * Xarray: http://xarray.pydata.org/en/stable/
 * https://www.giss.nasa.gov/tools/panoply/download/
 
+
+==Chapel==
+* https://chapel-lang.org
+* https://www.wikiwand.com/en/LAPACK
