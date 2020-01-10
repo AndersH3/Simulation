@@ -30,3 +30,7 @@ Simulation
 * https://www.wikiwand.com/en/Standard_normal_table
 * https://cockrum.net/code.html#TrueRNG_gaussian
 * https://www.wikiwand.com/en/Box%E2%80%93Muller_transform
+* https://www.wikiwand.com/en/Cholesky_decomposition
+
+==Prerequisites==
+* https://www.openblas.net/
