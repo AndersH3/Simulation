@@ -1,4 +1,10 @@
 # Simulation
+
+==Licence==
+https://creativecommons.org/licenses/by/4.0/
+https://creativecommons.org/licenses/by/4.0/legalcode.txt
+
+
 Simulation
 
 * https://math.stackexchange.com/questions/446093/generate-correlated-normal-random-variables
