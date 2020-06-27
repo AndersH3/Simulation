@@ -42,3 +42,7 @@ Simulation
 
 ==Prerequisites==
 * https://www.openblas.net/
+
+==Application==
+
+* https://megasociety.org/noesis/141/ferguson.html?fbclid=IwAR3Drk1gF_qpLRBuhElGrJD_k_Thc2_m6JLsAj8hIr_Joyxhc_mtSGu_C1A
