@@ -1,0 +1,7 @@
+┌─[anonymous@parrot]─[/media/anonymous/C01E-5F87/iq_differences]
+└──╼ $python3.11 iq_diff.py 
+INFO:root:Simulated 1000000 pairs in 0.208 seconds
+Average IQ difference between two random people: 16.93 IQ points
+┌─[anonymous@parrot]─[/media/anonymous/C01E-5F87/iq_differences]
+└──╼ $
+
