@@ -1,5 +1,6 @@
 import numpy as np
 
+
 def simulate_avg_iq_diff(rho, mu=100, sigma=15, n_samples=1_000_000, seed=None):
     """
     Simulate two correlated IQ test scores and return the average absolute difference.
@@ -30,11 +31,12 @@ def simulate_avg_iq_diff(rho, mu=100, sigma=15, n_samples=1_000_000, seed=None):
 
     # Construct two normals with correlation rho
     iq1 = mu + sigma * z1
-    iq2 = mu + sigma * (rho*z1 + np.sqrt(1 - rho**2) * z2)
+    iq2 = mu + sigma * (rho * z1 + np.sqrt(1 - rho**2) * z2)
 
     # Compute absolute differences and return their mean
     diffs = np.abs(iq1 - iq2)
     return diffs.mean()
+
 
 if __name__ == "__main__":
     rho = 0.6
