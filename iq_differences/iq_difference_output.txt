@@ -1,0 +1,3 @@
+⬢ [anonymous@toolbx ~]$ python3.13 iq_difference.py
+Average absolute IQ difference (ρ=0.6): 10.696 points
+⬢ [anonymous@toolbx ~]$
