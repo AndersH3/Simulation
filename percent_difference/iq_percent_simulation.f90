@@ -11,7 +11,7 @@ program iq_percent_difference
   ! Parameters for the simulation
   mean = 100.0
   stddev = 15.0
-  rho = 0.8  ! Correlation between x and y (if simulated with correlation)
+  rho = 0.6  ! Correlation between x and y (if simulated with correlation)
 
   allocate(x(n), y(n), percent_diff(n))
 
