@@ -5,6 +5,7 @@ program iq_percent_difference
   real, allocatable :: x(:), y(:), percent_diff(:)
   real :: avg_percent_diff
   integer :: i
+  real :: u1, u2
 
   call random_seed()
 
@@ -15,13 +16,18 @@ program iq_percent_difference
 
   allocate(x(n), y(n), percent_diff(n))
 
-  ! Generate correlated IQ scores (Cholesky approach)
+  ! Generate correlated IQ scores using Box-Muller and correlation formula
   do i = 1, n
-     call random_number(x(i))
-     call random_number(y(i))
+     ! Box–Muller for x(i)
+     call random_number(x(i))        ! u1
+     call random_number(y(i))        ! u2
      x(i) = mean + stddev * sqrt(-2.0*log(x(i))) * cos(2.0*3.1415927*y(i))
-     call random_number(y(i))
-     y(i) = mean + stddev * (rho * (x(i) - mean)/stddev + sqrt(1.0 - rho**2) * sqrt(-2.0*log(y(i))) * cos(2.0*3.1415927*y(i)))
+
+     ! Independent uniforms for the normal term of y(i)
+     call random_number(u1)
+     call random_number(u2)
+     y(i) = mean + stddev * (rho * (x(i) - mean)/stddev + &
+          sqrt(1.0 - rho**2) * sqrt(-2.0*log(u1)) * cos(2.0*3.1415927*u2))
   end do
 
   ! Compute percent differences
