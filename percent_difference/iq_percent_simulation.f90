@@ -6,6 +6,8 @@ program iq_percent_difference
   real :: avg_percent_diff
   integer :: i
 
+  real :: u1, u2, v1, v2, z2
+
   call random_seed()
 
   ! Parameters for the simulation
@@ -17,11 +19,18 @@ program iq_percent_difference
 
   ! Generate correlated IQ scores (Cholesky approach)
   do i = 1, n
-     call random_number(x(i))
-     call random_number(y(i))
-     x(i) = mean + stddev * sqrt(-2.0*log(x(i))) * cos(2.0*3.1415927*y(i))
-     call random_number(y(i))
-     y(i) = mean + stddev * (rho * (x(i) - mean)/stddev + sqrt(1.0 - rho**2) * sqrt(-2.0*log(y(i))) * cos(2.0*3.1415927*y(i)))
+     ! Draw two independent uniforms for the first normal variate
+     call random_number(u1)
+     call random_number(u2)
+     x(i) = mean + stddev * sqrt(-2.0 * log(u1)) * cos(2.0 * 3.1415927 * u2)
+
+     ! Draw two fresh uniforms for the second normal variate
+     call random_number(v1)
+     call random_number(v2)
+     z2 = sqrt(-2.0 * log(v1)) * cos(2.0 * 3.1415927 * v2)
+
+     y(i) = mean + stddev * ( rho * (x(i) - mean)/stddev &
+          + sqrt(1.0 - rho**2) * z2 )
   end do
 
   ! Compute percent differences
