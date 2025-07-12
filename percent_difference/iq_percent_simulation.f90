@@ -1,44 +1,76 @@
-program iq_percent_difference
+program iq_simulation
+  use iso_fortran_env, only: real64
   implicit none
-  integer, parameter :: n = 1000000
-  real :: mean, stddev, rho
-  real, allocatable :: x(:), y(:), percent_diff(:)
-  real :: avg_percent_diff
-  integer :: i
-  real :: u1, u2
+  !--------------------------------------------------------------------
+  ! This program simulates IQ test–retest percent-differences and
+  ! inter-individual percent variability in IQ scores for a large sample.
+  ! It models two sequential IQ test scores per person as correlated
+  ! normal variables (ρ = 0.6), then computes and prints the average
+  ! percent difference within individuals (intra-individual) and between
+  ! randomly paired individuals (inter-individual). Parallel reductions
+  ! use OpenMP for the heavy loops.
+  !--------------------------------------------------------------------
 
+  integer, parameter    :: N = 10000000, M = 10000000
+  real(real64), parameter :: mu    = 100.0_real64
+  real(real64), parameter :: sigma =  15.0_real64
+  real(real64), parameter :: rho   =   0.6_real64
+
+  real(real64), allocatable :: score1(:), score2(:)
+  real(real64) :: intra_sum, inter_sum
+  integer :: i, j, idx1, idx2
+  real(real64) :: u1, u2, z1, z2
+
+  ! Initialize the intrinsic RNG with a distinct seed
   call random_seed()
 
-  ! Parameters for the simulation
-  mean = 100.0
-  stddev = 15.0
-  rho = 0.6  ! Correlation between x and y (if simulated with correlation)
+  ! Allocate arrays to hold generated scores
+  allocate(score1(N), score2(N))
 
-  allocate(x(n), y(n), percent_diff(n))
-
-  ! Generate correlated IQ scores using Box-Muller and correlation formula
-  do i = 1, n
-     ! Box–Muller for x(i)
-     call random_number(x(i))        ! u1
-     call random_number(y(i))        ! u2
-     x(i) = mean + stddev * sqrt(-2.0*log(x(i))) * cos(2.0*3.1415927*y(i))
-
-     ! Independent uniforms for the normal term of y(i)
-     call random_number(u1)
-     call random_number(u2)
-     y(i) = mean + stddev * (rho * (x(i) - mean)/stddev + &
-          sqrt(1.0 - rho**2) * sqrt(-2.0*log(u1)) * cos(2.0*3.1415927*u2))
+  !--------------------------------------------------------------------
+  ! Generate correlated IQ scores serially
+  !--------------------------------------------------------------------
+  do i = 1, N
+    call random_number(u1)
+    call random_number(u2)
+    if (u1 <= 0.0_real64) u1 = 1.0e-10_real64
+    z1 = sqrt(-2.0_real64 * log(u1)) * cos(2.0_real64 * acos(-1.0_real64) * u2)
+    z2 = sqrt(-2.0_real64 * log(u1)) * sin(2.0_real64 * acos(-1.0_real64) * u2)
+    score1(i) = mu + sigma * z1
+    score2(i) = mu + sigma * (rho * z1 + sqrt(1.0_real64 - rho*rho) * z2)
   end do
 
-  ! Compute percent differences
-  do i = 1, n
-     percent_diff(i) = 100.0 * abs(x(i) - y(i)) / ((x(i) + y(i)) / 2.0)
+  !--------------------------------------------------------------------
+  ! Compute average intra-individual percent difference in parallel
+  !--------------------------------------------------------------------
+  intra_sum = 0.0_real64
+  !$omp parallel do default(shared) private(i) reduction(+:intra_sum)
+  do i = 1, N
+    intra_sum = intra_sum + 100.0_real64 * abs(score1(i) - score2(i)) / ((score1(i) + score2(i)) / 2.0_real64)
   end do
+  !$omp end parallel do
 
-  ! Compute average percent difference
-  avg_percent_diff = sum(percent_diff) / n
+  print *, "Average intra-individual percent difference =", intra_sum / real(N, real64)
 
-  print *, 'Average percent difference:', avg_percent_diff
+  !--------------------------------------------------------------------
+  ! Compute average inter-individual percent difference in parallel
+  !--------------------------------------------------------------------
+  inter_sum = 0.0_real64
+  !$omp parallel do default(shared) private(j, idx1, idx2, u1, u2) reduction(+:inter_sum)
+  do j = 1, M
+    do
+      call random_number(u1)
+      idx1 = int(u1 * N) + 1
+      call random_number(u2)
+      idx2 = int(u2 * N) + 1
+      if (idx1 /= idx2) exit
+    end do
+    inter_sum = inter_sum + 100.0_real64 * abs(score1(idx1) - score1(idx2)) / ((score1(idx1) + score1(idx2)) / 2.0_real64)
+  end do
+  !$omp end parallel do
 
-  deallocate(x, y, percent_diff)
-end program iq_percent_difference
+  print *, "Average inter-individual percent difference =", inter_sum / real(M, real64)
+
+  ! Clean up
+  deallocate(score1, score2)
+end program iq_simulation
